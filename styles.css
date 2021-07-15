@@ -1,4 +1,212 @@
 body{
-	margin: 0;
+	display: flex;
+	height: 100%;
+	width: 100vw;
+	min-width: 478px;
+	margin: 0 auto;
+	justify-content: center;
+	align-items: center;
+	background: white;
+	overflow: hidden;
+
+	font-size: 2rem;
+	font-weight: bold;
+	font-family: 'Varela Round', sans-serif;
+	color: #ffffff;
+}
+
+p{
+	font-size: 1.2rem;
+	color: #614c4b;
+	text-align: center;
+}
+
+.game-content{
+	display: block;
+	height: 100%;
+	width: 30rem;
+	background: #ffffff;
+}
+
+.header-container{
+	display: block;
+
+}
+
+.header-flex{
+	display: flex;
+	justify-content: center;
+	margin-top: 2rem;
+}
+
+.left-header{
+	margin-left: auto;
+	margin-right: 1rem;
+}
+
+.center-header{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	padding: 1rem 1.5rem;
+	border-radius: 1.5rem;
+	background: #edc33b;
+}
+
+.right-header{
+	margin-left: 1rem;
+	margin-right: auto;
+}
+
+
+.show-score{
+	display: inline-block;
+	width: 6rem;
+	height: 6rem;
+
+	align-items: center;
+	border-radius: 1rem;
+	background: #614c4b;
+}
+
+.left-header,
+.right-header{
+	display: grid;
+}
+
+.show-score p{
+	color: white;
+}
+
+.icon{
+	display: flex;
+	height: 4rem;
+	border-radius: 1rem;
+	background: #614c4b;
+	font-size: 3rem;
+}
+
+.icon img{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	margin: auto;
+}
+
+/* Botão temporario */
+#startButton{
+	width: 100px;
+	height: 50px;
+
+	position: fixed;
+	top: 0;
+	bottom: 100%;
+	left: 0;
+	right: 0;
+	background: gold;
+}
+
+#startButton:hover {
+	cursor: pointer;
+}
+
+
+
+
+/* ----- Game ----- */
+
+/* Mudanças de teste feitas daqui */
+
+#table-game{
+	display: flex;
+	position: absolute;
+	width: 360px;
+	height: 360px;
+
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+
+	padding: .3rem;
+	background: none;
+}
+
+#table-game div{
+	width: 0;
+	height: 0;
+	position: fixed;
+	font-size: clamp(2rem, 4vw, .5rem);
+}
+
+#bg-game{
+	display: grid;
+	height: 360px;
+	width: 360px;
+	margin: 0 auto;
+
+	gap: .25rem;
+	padding: .3rem;
+	background: #868686;
+
+}
+
+.grid-box{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	background: lightgray;
+	border-radius: 0.2rem;
+	aspect-ratio: 1;
+}
+
+/* Até aqui  */
+
+.tile2{
+	background: #efe5db;
+	color: #5c4746;
+}
+
+.tile4{
+	background: #ece0c8;
+	color: #5c4746;
+}
+
+.tile8{
+	background: #f2b179;
+}
+
+.tile16{
+	background: #ec8e50;
+}
+
+.tile32{
+	background: #f57c61;
+}
+
+.tile64{
+	background: #e95837;
+}
+
+.tile128{
+	background: #f4d76f;
+}
+
+.tile256{
+	background: #f1d04b;
+}
+
+.tile512{
+	background: #e5c02a;
+}
+
+.tile1024{
+	background: #ebc400;
+}
+
+.tile2048{
+	background: #edc33b;
 }

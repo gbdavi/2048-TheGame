@@ -2,12 +2,54 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<link rel="icon" type="image/png" href="">
+	<link rel="icon" type="image/png" href="./2048.png">
 	<title>2048 the Game</title>
 
 	<link rel="stylesheet" type="text/css" href="./styles.css">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+
 </head>
 <body>
+	<div class="game-content">
+		<div class="header-container">
+			<div class="header-flex">
+				<div class="left-header">
+					<div class="show-score">
+						<p>SCORE</p>
+						<p>492</p>
+					</div>
+					<div class="icon">
+						<img src="./HomeOriginal.png" width="42px" height="42px">
+					</div>
+				</div>
+				<div class="center-header">
+					<h2>2048</h2>
+				</div>
+				<div class="right-header">
+					<div class="show-score">
+						<p>BEST</p>
+						<p>11840</p>
+					</div>
+					<div class="icon">
+						<img src="./settings.png" width="42px" height="42px">
+					</div>
+				</div>
+			</div>
+			<p>Join the numbers and get the 2048 tile!</p>	
+		</div>
+		<!-- Foi mudado na versão de teste -->
+		<div id="table">
+			<div id="table-game"></div>
+			<div id="bg-game"></div>
+		</div>
+		<!-- Até aqui -->
+		<div style="height: 4rem;"></div>
+	</div>
+
+	<div id="startButton" onclick="table.tilesUpdate()">Start</div>
+
 	<script type="text/javascript" src="./scripts.js"></script>
 </body>
 </html>
