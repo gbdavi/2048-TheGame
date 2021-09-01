@@ -1,13 +1,213 @@
+function $(obj,index) {
+	return document.querySelectorAll(obj)[index||0]
+}
+
+let gridStyleSize
+
+//Menu e opções
+
+let gameMenuPage = 1
+let mainMenuPage = 0
+
+const menu = {
+
+	changeMainMenu(index) {
+		if (index == '+') {
+			mainMenuPage++
+		}
+
+		if (index == '-') {
+			mainMenuPage--
+		}
+
+		if (typeof(index) == 'number') {
+			mainMenuPage = index
+		}
+
+		if (mainMenuPage > 3 ) {
+			mainMenuPage = 0
+		}
+
+		if ( mainMenuPage < 0 ) {
+			mainMenuPage = 3
+		}
+
+		menu.gameMode(index)
+	},
+
+	gameMode(index) {
+		let text
+		let image
+
+		switch ( mainMenuPage ){
+			case 0:
+				text = 'Classic - 4x4'
+				image = './assets/Table-4.png'
+				gridStyleSize = 4
+				break
+
+			case 1:
+				text = 'Large - 5x5'
+				image = './assets/Table-5.png'
+				gridStyleSize = 5
+				break
+
+			case 2:
+				text = 'Wide - 6x6'
+				image = './assets/Table-6.png'
+				gridStyleSize = 6
+				break
+
+			case 3:
+				text = 'Huge - 8x8'
+				image = './assets/Table-8.png'
+				gridStyleSize = 8
+				break
+			default: break;
+		}
+
+		$('#main-menu .imgDescription').innerText = text
+
+		if ( typeof(index) !== 'number' ) {
+
+			let img = document.createElement('img')
+			img.src = image
+			img.style.marginLeft = index === '+' ? '-370px' : '370px'
+
+			$('#main-menu .container > div:nth-child(1)').appendChild( img )
+
+			menu.mainMenuAnimation(index)
+		} else { $('#main-menu .container div > img',0).src = image }
+	},
+
+	mainMenuAnimation(direction) {
+		if ( direction === '-' ) {
+			$('#main-menu .container div > img',0).style.marginLeft='-370px'
+
+		} else if ( direction === '+' ) {
+			$('#main-menu .container div > img',0).style.marginLeft='370px'
+		}
+
+		
+		setTimeout(()=>{ $('#main-menu .container div > img',1).style.marginLeft='0' },0)
+		setTimeout(()=>{ $('#main-menu .container div > img',0).remove() },200)
+	},
+
+	borderBg() {
+		if ( $('#borderLeft') == undefined || $('#borderRight') == undefined ) {
+
+			let borderLeft = document.createElement('div')
+			let borderRight = document.createElement('div')
+
+			borderLeft.id='borderLeft'
+			borderLeft.style.position='fixed'
+			borderLeft.style.background='white'
+			borderLeft.style.height='100%'
+			borderLeft.style.top='0'
+			borderLeft.style.left='0'
+			borderLeft.style.zIndex='50'
+
+			borderRight.id='borderRight'
+			borderRight.style.background='white'
+			borderRight.style.position='fixed'
+			borderRight.style.height='100%'
+			borderRight.style.top='0'
+			borderRight.style.zIndex='50'
+
+			document.body.appendChild( borderLeft )
+			document.body.appendChild( borderRight )
+		}
+
+		let content = $('#game-content').getClientRects()[0]
+
+		$('#borderLeft').style.width = content['left'] + 'px'
+
+		$('#borderRight').style.width = content['left'] + 'px'
+		$('#borderRight').style.left = ( content['left'] + content['width'] ) + 'px'
+	},
+
+	changeGameMenu(index,page,btn) {
+		if (index == '+') {
+			gameMenuPage++
+		}
+
+		if (index == '-') {
+			gameMenuPage--
+		}
+
+		if (typeof(index) == 'number') {
+			gameMenuPage = index
+		}
+
+		let playBtn = $('#how-to-play .play').style		
+		gameMenuPage == 3 ? playBtn.visibility='visible' : playBtn.visibility='hidden'
+
+		menu.howToPlay()
+	},
+
+	howToPlay(){
+		let text
+		let image
+		let btn = document.querySelectorAll('#how-to-play .button-container img')
+
+		switch (gameMenuPage){
+			case 1:
+				text = 'Swipe or press arrow keys to move the tiles in any direction (left, right, up, down)'
+				image = './assets/How to Play-1.png'
+				btn[0].classList.remove('visible')
+				btn[1].classList.add('visible')
+				
+				$('#how-to-play .img').style='width: 350px;height: 350px;'
+				break
+			case 2:
+				text = 'When two tiles with the same number join, they merge into one'
+				image = './assets/How to Play-2.png'
+				btn[0].classList.add('visible')
+				btn[1].classList.add('visible')
+
+				$('#how-to-play .img').style='width: 268px;height: 268px;'
+				break
+			case 3:
+				text = 'Join the tile and get to the 2048 one!'
+				image = './assets/How to Play-3.png'
+				btn[0].classList.add('visible')
+				btn[1].classList.remove('visible')
+
+				$('#how-to-play .img').style='width: 268px;height: 268px;'
+				break
+			default: break;
+		}
+
+		$('#how-to-play .imgDescription').innerText = text
+		$('#how-to-play .img').src = image
+		$('#how-to-play .button-container div').innerText = gameMenuPage + '/3'
+	}
+}
+
+menu.howToPlay()
+menu.changeMainMenu(0)
 
 
-let gridStyleSize = 5
+//Mobile Config
 
-const gridStyleRow = "repeat(" + gridStyleSize + ", 1fr)"
-const gridStyleColumn = "repeat(" + gridStyleSize + ", 1fr)"
+function detectMobile() { 
+	if( navigator.userAgent.match(/Android/i)
+	|| navigator.userAgent.match(/webOS/i)
+	|| navigator.userAgent.match(/iPhone/i)
+	|| navigator.userAgent.match(/iPad/i)
+	|| navigator.userAgent.match(/iPod/i)
+	|| navigator.userAgent.match(/BlackBerry/i)
+	|| navigator.userAgent.match(/Windows Phone/i)
+	){
+		return true;
+	} else {
+		return false;
+	}
+}
 
-
-document.querySelector('#bg-game').style.gridTemplateRows = gridStyleRow
-document.querySelector('#bg-game').style.gridTemplateColumns = gridStyleColumn
+if ( detectMobile() == true ) {
+	$('#game-content').style= 'display: block; height: 100%; width: 30rem; background: #ffffff; position: fixed; top: 0; zoom: 2.1; margin-top: -20px; overflow: hidden !important; padding-bottom: 50px;'
+}
 
 
 //Storage
@@ -21,30 +221,48 @@ const Storage = {
 }
 
 
-//Config Storage
-try {
-	Storage.get('tableSize' + gridStyleSize)[0]
-} catch(err){
-	Storage.set('tableSize' + gridStyleSize,[])
-	Storage.set('score' + gridStyleSize,[0])
-}
-
-try {
-	Storage.get('score' + gridStyleSize)[0]
-} catch (err){
-	Storage.set('tableSize' + gridStyleSize,[])
-	Storage.set('score' + gridStyleSize,[0])
-}
-
-try {
-	Storage.get('record' + gridStyleSize)[0]
-} catch(err){
-	Storage.set('record' + gridStyleSize,[0])
-}
-
 
 // Utils
 const utils = {
+	start(size){
+		gridStyleSize = size
+		utils.setConfigs()
+		table.bgUpdate()
+
+		if (Storage.get('tableSize' + gridStyleSize)[0] == undefined) {
+			utils.newTileGenerate()
+			utils.newTileGenerate()
+		} else {
+			table.tilesUpdate()
+		}
+
+		utils.score()
+		utils.highScore()
+	},
+
+	setConfigs() {
+		//Config Storage
+		try {
+			Storage.get('tableSize' + gridStyleSize)[0]
+		} catch(err){
+			Storage.set('tableSize' + gridStyleSize,[])
+			Storage.set('score' + gridStyleSize,[0])
+		}
+
+		try {
+			Storage.get('score' + gridStyleSize)[0]
+		} catch(err){
+			Storage.set('tableSize' + gridStyleSize,[])
+			Storage.set('score' + gridStyleSize,[0])
+		}
+
+		try {
+			Storage.get('record' + gridStyleSize)[0]
+		} catch(err){
+			Storage.set('record' + gridStyleSize,[0])
+		}
+	},
+
 	tileLocate() {
 		return document.querySelectorAll('#table-game div')
 	},
@@ -105,11 +323,6 @@ const utils = {
 		return document.querySelectorAll('#bg-game div')[ rows[x-1][y-1] ].getClientRects()[0]
 	},
 
-
-	newRandomNumber(min,max){
-		return parseInt(Math.random() * (max + 1 - min) + 1)
-	},
-
 	newTileGenerate() {
 		if (Storage.get('tableSize' + gridStyleSize).length < gridStyleSize*gridStyleSize) {
 			let array = Storage.get('tableSize' + gridStyleSize)
@@ -130,7 +343,7 @@ const utils = {
 			let newId = String(row) + String(column)
 
 			let newTile = table.addElement(newClass,newId,value)
-			document.querySelector('.game-content #table-game').appendChild(newTile)
+			$('#game-content #table-game').appendChild(newTile)
 		}
 	},
 
@@ -138,13 +351,9 @@ const utils = {
 		return parseInt(Math.random() * (max + 1 - min) + 1)
 	},
 
-	newRandomTile() {
-		return utils.newRandomNumber(1,4)
-	},
-
 	score(sum) {
 		let score = Number(Storage.get('score' + gridStyleSize))
-		score += Number(sum)
+		score += Number(sum) || 0
 		Storage.set('score' + gridStyleSize,[score])
 		document.querySelectorAll('.left-header .show-score p')[1].innerHTML = Storage.get('score' + gridStyleSize)
 	},
@@ -154,7 +363,6 @@ const utils = {
 			Storage.set('record' + gridStyleSize,score)
 		}
 		document.querySelectorAll('.right-header .show-score p')[1].innerText = Storage.get('record' + gridStyleSize)
-		//Colocar na tela "Pontuação recorde!"
 	}
 }
 
@@ -163,10 +371,11 @@ window.addEventListener('resize', () => {
 	for (var i = 0; i < utils.tileLocate().length; i++) {
 		let tile = utils.tileLocate()[i]
 		let style = utils.getStyle(tile.id[0],tile.id[1],tile.innerText)
-		console.log(style)
 		let arr = style.split(';')
 		tile.style = arr[1] + "; " + arr[2] + ";" + arr[3] + ";" + arr[4] + ";"
-	}	
+	}
+
+	menu.borderBg()	
 })
 
 
@@ -204,37 +413,58 @@ window.addEventListener('keydown', e =>  {
 
 
 const tiles = {
-	findTilesByAxis(moveTo){
+	findTilesByAxis(moveTo,test){
+		let notSum = []
 		for (var axlePosition = 0; axlePosition < gridStyleSize; axlePosition++) {
 			for (var i = 0; i < utils.tileLocate().length; i++){
 				if (moveTo == 'top') {
 					if (utils.tileLocate()[i].id[0] == axlePosition + 1){
-						if ( tiles.colisionRequest(utils.tileLocate()[i],moveTo) ) {
+						let colision = tiles.colisionRequest(utils.tileLocate()[i],moveTo,notSum,test)
+						if ( colision != undefined && test != true ) {
 							i = 0
+							notSum.push(colision)
+						}
+						if ( colision == 'Has a valid move' ) {
+							return 'Has a valid move'
 						}
 					}
 				}
 				
 				if (moveTo == 'bottom') {
 					if (utils.tileLocate()[i].id[0] == gridStyleSize - axlePosition){
-						if ( tiles.colisionRequest(utils.tileLocate()[i],moveTo) ) {
+						let colision = tiles.colisionRequest(utils.tileLocate()[i],moveTo,notSum,test)
+						if ( colision != undefined && test != true ) {
 							i = 0
+							notSum.push(colision)
+						}
+						if ( colision == 'Has a valid move' ) {
+							return 'Has a valid move'
 						}
 					}
 				}
 
 				if (moveTo == 'left') {
 					if (utils.tileLocate()[i].id[1] == axlePosition + 1){		
-						if ( tiles.colisionRequest(utils.tileLocate()[i],moveTo) ) {
+						let colision = tiles.colisionRequest(utils.tileLocate()[i],moveTo,notSum,test)
+						if ( colision != undefined && test != true ) {
 							i = 0
+							notSum.push(colision)
+						}
+						if ( colision == 'Has a valid move' ) {
+							return 'Has a valid move'
 						}
 					}
 				}
 
 				if (moveTo == 'right') {
 					if (utils.tileLocate()[i].id[1] == gridStyleSize - axlePosition){
-						if ( tiles.colisionRequest(utils.tileLocate()[i],moveTo) ) {
+						let colision = tiles.colisionRequest(utils.tileLocate()[i],moveTo,notSum,test)
+						if ( colision != undefined && test != true ) {
 							i = 0
+							notSum.push(colision)
+						}
+						if ( colision == 'Has a valid move' ) {
+							return 'Has a valid move'
 						}
 					}
 				}
@@ -246,15 +476,24 @@ const tiles = {
 		if (String(checkPositionChange) != String(utils.tilesId())) {
 			utils.newTileGenerate()
 		}
-		else {
-			if (utils.tilesId().length == gridStyleSize*gridStyleSize) {
+
+		if (utils.tilesId().length == gridStyleSize*gridStyleSize && test != true ) {
+			let f_move = tiles.findTilesByAxis('top',true)
+			let s_move = tiles.findTilesByAxis('bottom',true)
+			let t_move = tiles.findTilesByAxis('left',true)
+			let ft_move = tiles.findTilesByAxis('right',true)
+
+			if ( f_move == 'Has a valid move' || s_move == 'Has a valid move' || t_move == 'Has a valid move' || ft_move == 'Has a valid move' ) {
+				console.log('Has a valid move')
+			} else {
 				console.log('Voce Perdeu!')
 			}
 		}
+
 		utils.highScore(Storage.get('score' + gridStyleSize))
 	},
 
-	colisionRequest(tile,moveTo){
+	colisionRequest(tile,moveTo,notSum,test){
 		for (var selected = 0; selected < gridStyleSize; selected++) {
 			if (moveTo == 'top') {
 				const similarTile = utils.tilesId().indexOf(String(selected + 1) + String(tile.id[1]))
@@ -263,9 +502,12 @@ const tiles = {
 					tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
 					break
 				}
-				if (utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText) {
+				if (utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText && notSum.indexOf( utils.tileLocate()[similarTile].id ) == -1 ) {
 					const tileFollowed = utils.tilesId().indexOf(String(selected + 2) + String(tile.id[1]))
 					if ( tileFollowed == -1 || utils.tileLocate()[tileFollowed] == tile) {
+						if ( test == true ) {
+							return 'Has a valid move'
+						}
 						tile.classList.remove('tile' + tile.innerText)
 						tile.innerText *= 2
 						tile.classList.add('tile' + tile.innerText)
@@ -274,7 +516,7 @@ const tiles = {
 						utils.score(tile.innerText)
 						
 						tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
-						return true
+						return tile.id
 					}
 				}
 			}
@@ -286,9 +528,12 @@ const tiles = {
 					tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
 					break
 				}
-				if (utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText) {
+				if (utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText && notSum.indexOf( utils.tileLocate()[similarTile].id ) == -1 ) {
 					const tileFollowed = utils.tilesId().indexOf(String(gridStyleSize - selected - 1) + String(tile.id[1]))
 					if ( tileFollowed == -1 || utils.tileLocate()[tileFollowed] == tile) {
+						if ( test == true ) {
+							return 'Has a valid move'
+						}
 						tile.classList.remove('tile' + tile.innerText)
 						tile.innerText *= 2
 						tile.classList.add('tile' + tile.innerText)
@@ -297,7 +542,7 @@ const tiles = {
 						utils.score(tile.innerText)
 						
 						tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
-						return true
+						return tile.id
 					}
 				}
 			}
@@ -309,9 +554,13 @@ const tiles = {
 					tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
 					break
 				}
-				if (utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText) {
+
+				if ( utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText && notSum.indexOf( utils.tileLocate()[similarTile].id ) == -1 ) {
 					const tileFollowed = utils.tilesId().indexOf(String(tile.id[0]) + String(selected + 2))
 					if ( tileFollowed == -1 || utils.tileLocate()[tileFollowed] == tile) {
+						if ( test == true ) {
+							return 'Has a valid move'
+						}
 						tile.classList.remove('tile' + tile.innerText)
 						tile.innerText *= 2
 						tile.classList.add('tile' + tile.innerText)
@@ -320,7 +569,7 @@ const tiles = {
 						utils.score(tile.innerText)
 						
 						tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
-						return true
+						return tile.id
 					}
 				}
 			}
@@ -332,9 +581,12 @@ const tiles = {
 					tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
 					break
 				}
-				if (utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText) {
+				if (utils.tileLocate()[similarTile] != tile && utils.tileLocate()[similarTile].innerText == tile.innerText && notSum.indexOf( utils.tileLocate()[similarTile].id ) == -1 ) {
 					const tileFollowed = utils.tilesId().indexOf(String(tile.id[0]) + String(gridStyleSize - selected - 1))
 					if ( tileFollowed == -1 || utils.tileLocate()[tileFollowed] == tile) {
+						if ( test == true ) {
+							return 'Has a valid move'
+						}
 						tile.classList.remove('tile' + tile.innerText)
 						tile.innerText *= 2
 						tile.classList.add('tile' + tile.innerText)
@@ -343,7 +595,7 @@ const tiles = {
 						utils.score(tile.innerText)
 
 						tile.style = utils.getStyle(tile.id[0],tile.id[1], tile.innerText)
-						return true
+						return tile.id
 					}
 				}
 			}	
@@ -354,14 +606,45 @@ const tiles = {
 
 
 const table = {
-	//Função de criar background -- NOVO --	
+	toggle(obj,extraClass) {
+		let div = $(obj)
+		let classes = div.classList.toString().split(' ')
+
+		if (extraClass != undefined) {
+			if ( classes.indexOf(extraClass != -1 ) ) {
+				div.classList.remove(extraClass)
+			} else {
+				div.classList.add(extraClass)
+			}
+		}
+
+		if ( classes.indexOf('visible') != -1 ) {
+			div.classList.remove('show')
+			setTimeout(()=>{
+				div.classList.remove('visible')
+			},500)
+		}
+
+		if ( classes.indexOf('visible') == -1 ) {
+			div.classList.add('visible')
+			div.classList.add('show')
+		}	
+	},
+
 	bgUpdate() {
+		const gridStyleRow = "repeat(" + gridStyleSize + ", 1fr)"
+		const gridStyleColumn = "repeat(" + gridStyleSize + ", 1fr)"
+
+		$('#table-game').innerHTML = ''
+		$('#bg-game').innerHTML = ''
+		$('#bg-game').style.gridTemplateRows = gridStyleRow
+		$('#bg-game').style.gridTemplateColumns = gridStyleColumn
+
 		for (var i = 0; i < gridStyleSize*gridStyleSize; i++) {
-			document.querySelector('.game-content #bg-game').appendChild(table.addElement())
+			$('#game-content #bg-game').appendChild(table.addElement())
 		}
 	},
 
-	//Função de adicionar todos os tiles -- NOVO --
 	tilesUpdate() {
 		for (var i = 0; i < utils.tilePosition().length; i++) {
 
@@ -371,7 +654,7 @@ const table = {
 
 			let tile = table.addElement( $class , $id , $text )
 
-			document.querySelector('.game-content #table-game').appendChild(tile)
+			$('#game-content #table-game').appendChild(tile)
 		}
 	},
 
@@ -403,43 +686,25 @@ const table = {
 	}
 }
 
-table.bgUpdate()
-document.querySelectorAll('.left-header .show-score p')[1].innerHTML = Storage.get('score' + gridStyleSize)
-utils.highScore()
+//table.bgUpdate()
+//document.querySelectorAll('.left-header .show-score p')[1].innerHTML = Storage.get('score' + gridStyleSize)
+//utils.highScore()
 
+table.toggle('#main-menu')
+menu.borderBg()
 
 
 /*
-
------- Parte com bug (mover para esquerda) -------
-[{"x":5,"y":1,"value":2048},{"x":5,"y":2,"value":128},{"x":4,"y":1,"value":16},{"x":4,"y":2,"value":4},{"x":5,"y":3,"value":4},{"x":3,"y":1,"value":4},{"x":4,"y":3,"value":2},{"x":5,"y":4,"value":4},{"x":4,"y":4,"value":2},{"x":2,"y":2,"value":2}]
-
-A: Acho que quando outro tile se soma, a quantidade de tiles muda, e o seletor de tiles não começa a contar do zero, fazendo assim ele não se mecher
-
+onclick="table.toggle('#game-menu');table.toggle('#game');"
+	
 */
 
-/*
-
------- Parte com bug (mover para esquerda) ------
-
-Ele soma duas vezes (apareceu quando eu "resolvi" o bug de cima resetando o 'i' do for)
-
-[{"x":5,"y":1,"value":2048},{"x":5,"y":2,"value":1024},{"x":5,"y":3,"value":64},{"x":5,"y":4,"value":64},{"x":4,"y":4,"value":16},{"x":5,"y":5,"value":32},{"x":4,"y":3,"value":4},{"x":3,"y":3,"value":2},{"x":4,"y":2,"value":2},{"x":4,"y":5,"value":4},{"x":3,"y":5,"value":2},{"x":4,"y":1,"value":2},{"x":3,"y":4,"value":2}]
-
-A: Talves dê para fazer um "notSum" apontando para não somar com o tile q está do lado
-
-*/
 
 //https://css-tricks.com/how-do-you-do-max-font-size-in-css/
 
 
 /*
-[{ "x":4,"y":4,"value":2},{"x":3,"y":3,"value":2},{"x":4,"y":3,"value":2}]
-
-[{"x":4,"y":4,"value":1024},{"x":4,"y":3,"value":512},{"x":4,"y":2,"value":128},{"x":4,"y":1,"value":32},{"x":3,"y":1,"value":16},{"x":2,"y":1,"value":8},{"x":1,"y":1,"value":2},{"x":3,"y":2,"value":4},{"x":2,"y":2,"value":2}]
-
-[{ x: 2, y: 3, value: 2 }]
-[{"x":2,"y":3,"value":2}]
+[{"x":4,"y":4,"value":2048},{"x":4,"y":3,"value":1024},{"x":4,"y":2,"value":256},{"x":4,"y":1,"value":128},{"x":3,"y":1,"value":16},{"x":2,"y":1,"value":4},{"x":3,"y":2,"value":4},{"x":2,"y":4,"value":2}]
 */
 
 
@@ -457,3 +722,28 @@ function startBot() {
 startBot()
 setInterval(() =>{for (var i = 0; i < 20; i++) {utils.newTileGenerate()}}, 7000)
 */
+
+/*function startBot() {
+	setInterval(() => {
+		tiles.findTilesByAxis('top')
+	} ,273)
+
+	setTimeout(() =>{
+		setInterval(()=>{
+			tiles.findTilesByAxis('left')
+		},273)
+	},91)
+
+	setTimeout(() =>{
+		setInterval(()=>{
+			tiles.findTilesByAxis('bottom')
+		},273)
+	},182)
+
+	setTimeout(() =>{
+		setInterval(()=>{
+			tiles.findTilesByAxis('right')
+		},273)
+	},273)
+}
+startBot()*/

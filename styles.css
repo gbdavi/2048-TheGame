@@ -13,6 +13,13 @@ body{
 	font-weight: bold;
 	font-family: 'Varela Round', sans-serif;
 	color: #ffffff;
+
+	-webkit-touch-callout: none;  /* iPhone OS, Safari */
+    -webkit-user-select: none;    /* Chrome, Safari 3 */
+    -khtml-user-select: none;     /* Safari 2 */
+    -moz-user-select: none;       /* Firefox */
+    -ms-user-select: none;        /* IE10+ */
+    user-select: none;            /* Possível implementação no futuro */
 }
 
 p{
@@ -21,16 +28,252 @@ p{
 	text-align: center;
 }
 
-.game-content{
+#bgWhite{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: white;
+	z-index: 5;
+
+	transition: .5s linear;
+	opacity: 0;
+	visibility: hidden;
+}
+
+#game-content{
 	display: block;
 	height: 100%;
 	width: 30rem;
 	background: #ffffff;
 }
 
-.header-container{
-	display: block;
+#main-menu{
+	position: absolute;
+	width: inherit;
+	height: inherit;
+	background: #f1f1f1;
+	
+	transition: all .5s linear;
+	opacity: 0;
+	visibility: hidden;
+}
 
+#main-menu .container{
+	width: 420px;
+	text-align: center;
+	position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#main-menu .container > div:nth-child(1) {
+	width: 260px;
+	height: 260px;
+}
+
+#main-menu .container div:nth-child(1) img {
+	width: 260px;
+	height: 260px;
+    transition: .2s;
+
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+
+    /*margin: 0 -741px 0 0;*/
+}
+
+#main-menu .mode-container{
+	display: flex;
+	align-items: center;
+	margin: 20px;
+}
+
+#main-menu .mode-container div{
+	width:-webkit-fill-available;
+	color: #614c4b;
+	font-weight: bold;
+}
+
+#main-menu .button-container div{
+	margin: 20px auto;
+}
+
+.icon-container{
+	padding: 10px;
+	text-align: right;
+}
+
+.icon-container img{
+	width: 45px;
+	height: 45px;
+	background: #614c4b;
+	border-radius: 100%;
+	cursor: pointer;
+}
+
+#game{
+	opacity: 0;
+	visibility: hidden;
+	transition: all .5s linear;
+	background: #f1f1f1;
+
+    margin-top: -32px;
+    padding-top: 32px;
+    padding-bottom: 200px;
+}
+
+#game-menu{
+	position: fixed;
+	top: 0;
+	justify-content: center;
+	align-items: center;
+
+	opacity: 0;
+	visibility: hidden;
+	transition: all .2s linear;
+	z-index: 10;
+
+	width: inherit;
+	height: inherit;
+	background: #f1f1f1;
+}
+
+#game-menu div{
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+#game-menu h2{
+	color: #614c4b;
+	margin-left: 25%;
+	margin-right: 25%;
+}
+
+#how-to-play {
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    top: 0;
+    
+	opacity: 0;
+	visibility: hidden;
+	transition: all .3s linear;
+	z-index: 10;
+}
+
+#how-to-play > div:nth-child(1){
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 28rem;
+    height: 90%;
+    background: #614c4b;
+    border-radius: 30px;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}
+
+#how-to-play .imgDescription{
+	text-align: center;
+	font-size: 1.7rem;
+	margin: 30px;
+}
+
+#how-to-play .img{
+	position: absolute;
+	top: 140px;
+	left: 50%;
+	transform: translate(-50%);
+	width: 268px;
+	height: 268px;
+}
+
+#how-to-play .play{
+    position: absolute;
+    width: 60%;
+    bottom: 18%;
+    left: 50%;
+    transform: translate(-50%);
+
+    color: #614c4b;
+    background: white;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 25px;
+    text-align: center;
+    visibility: hidden;
+}
+
+#how-to-play .button-container{
+	display: flex;
+    height: 50px;
+    width: 200px;
+    position: absolute;
+    align-items: center;
+    bottom: 5%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 5;
+}
+
+#how-to-play .button-container img:hover,#how-to-play .play:hover{
+	cursor: pointer;
+}
+
+#how-to-play .button-container div{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#how-to-play > div:nth-child(2) {
+	width: 100%;
+	height: 100%;
+	display: block;
+	position: fixed;
+	top: 0;
+	left:0;
+	z-index: 4;
+
+	background: black;
+	opacity: .1;
+}
+
+
+.button{
+    display: grid;
+    align-items: center;
+	width: 300px;
+    height: 60px;
+    background: #614c4b;
+    border-radius: 20px;
+    margin: 0 10px 20px 10px;
+}
+
+.button2 {
+	width: 140px;
+    height: 60px;
+    background: #614c4b;
+    border-radius: 20px;
+    margin: 0 10px 20px 10px;
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+.show{
+	opacity: 1 !important;
+}
+
+.visible{
+	visibility: visible !important;
 }
 
 .header-flex{
@@ -113,11 +356,7 @@ p{
 }
 
 
-
-
 /* ----- Game ----- */
-
-/* Mudanças de teste feitas daqui */
 
 #table-game{
 	display: flex;
@@ -163,7 +402,7 @@ p{
 	aspect-ratio: 1;
 }
 
-/* Até aqui  */
+/* ----- Tiles -----  */
 
 .tile2{
 	background: #efe5db;
@@ -210,3 +449,62 @@ p{
 .tile2048{
 	background: #edc33b;
 }
+
+.tile4096{
+	background: #37d053;
+}
+
+.tile8192{
+	background: #66be0a;
+}
+
+.tile16384{
+	background: #5bb803;
+}
+
+.tile32768{
+	background: #54a603;
+}
+
+.tile65536{
+	background: #4e8a11;
+}
+
+.tile131072{
+	background: #5988f7;
+}
+
+.tile262144{
+	background: #497ff2;
+}
+
+.tile524288{
+	background: #3a6bf1;
+}
+
+.tile1048576{
+	background: #245cde;
+}
+
+.tile2097152{
+	background: #154ed4;
+}
+
+.tile4194304{
+	background: #a93eab;
+}
+
+
+@media only screen and (max-width: 768px), (max-device-width: 768px){
+/*
+#game-content{
+	position: fixed;
+	top: 0;
+	zoom: 2.1;
+	margin-top: -20px;
+	overflow: hidden !important;
+	padding-bottom: 50px;
+}
+*/
+}
+

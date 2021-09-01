@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="./assets/icons/game-icon.png">
+	<title>2048 the Game</title>
+
+	<link rel="stylesheet" type="text/css" href="./styles.css">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+	<div id="game-content">
+		<div id="bgWhite"></div>
+
+		<div id="main-menu">
+			<div class="icon-container">
+				<img src="./assets/icons/record-icon.png">
+				<img src="./assets/icons/help-icon.png" onclick="table.toggle('#bgWhite');table.toggle('#how-to-play');">
+				<img src="./assets/icons/config-icon.png" onclick="table.toggle('#bgWhite');setTimeout(()=>{table.toggle('#game-menu')},500)">
+			</div>
+
+			<div class="container">
+				<div>
+					<img class="img" draggable="false">
+				</div>
+				<div class="mode-container">
+					<img src="./assets/icons/arrow2-icon.png" draggable="false" width="48px" onclick="menu.changeMainMenu('-')">
+					<div class="imgDescription">Huge - 8x8</div>
+					<img src="./assets/icons/arrow2-icon.png" draggable="false" width="48px" style="transform: rotate(180deg);" onclick="menu.changeMainMenu('+')">
+				</div>
+				<div class="button-container">
+					<div class="button pointer" onclick="Storage.set('tableSize' + gridStyleSize,[]);Storage.set('score' + gridStyleSize,[]);utils.start(gridStyleSize);table.toggle('#main-menu');setTimeout(()=>{table.toggle('#game')},500);">PLAY</div>
+					<div class="button pointer" onclick="utils.start(gridStyleSize);table.toggle('#main-menu');setTimeout(()=>{table.toggle('#game')},500);">CONTINUE</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="game">
+			<div class="header-container">
+				<div class="header-flex">
+					<div class="left-header">
+						<div class="show-score">
+							<p>SCORE</p>
+							<p>0</p>
+						</div>
+						<div class="icon pointer" onclick="table.toggle('#game');setTimeout(()=>{table.toggle('#main-menu');},500)">
+							<img src="./assets/icons/home-icon.png" draggable="false" width="42px" height="42px">
+						</div>
+					</div>
+					<div class="center-header">
+						<h2>2048</h2>
+					</div>
+					<div class="right-header">
+						<div class="show-score">
+							<p>BEST</p>
+							<p>0</p>
+						</div>
+						<div class="icon pointer" onclick="setTimeout(()=>{table.toggle('#game-menu');},500)">
+							<img src="./assets/icons/settings-icon.png" draggable="false" width="42px" height="42px">
+						</div>
+					</div>
+				</div>
+				<p>Join the numbers and get the 2048 tile!</p>	
+			</div>
+			<div id="table">
+				<div id="table-game"></div>
+				<div id="bg-game"></div>
+			</div>
+			<div style="height: 4rem;"></div>
+		</div>
+
+		<div id="game-menu">	
+				<br>
+				<h2>SETTINGS</h2>
+				<br>
+				<br>
+				<div>
+					<div class="button pointer" onclick="table.toggle('#game-menu');setTimeout(()=>{$('#bgWhite').classList.remove('visible','show')},500)">RETURN</div>
+					<div style="display:flex;">
+						<div class="button2 pointer">MUTE</div>
+						<div class="button2 pointer">MUTE</div>
+					</div>
+					<div class="button pointer" onclick="table.toggle('#how-to-play');table.toggle('#bgWhite');">HOW TO PLAY</div>
+				</div>
+		</div>
+
+		<div id="how-to-play">
+			<div>
+				<div class="imgDescription">Sample Text</div>
+				<img class="img" draggable="false"></img>
+				<div class="play" onclick="utils.start(4); table.toggle('#game-menu'); setTimeout(()=>{$('#how-to-play #return').click()},100); setTimeout(()=>{table.toggle('#game')},500)">PLAY</div>
+				<div class="button-container">
+					<img src="./assets/icons/arrow-icon.png" draggable="false" style="transform: rotate(180deg); visibility: hidden;" onclick="menu.changeGameMenu('-')">
+					<div>1/3</div>
+					<img src="./assets/icons/arrow-icon.png" draggable="false" style="visibility: hidden;" onclick="menu.changeGameMenu('+')">
+				</div>
+			</div>
+			<div id="return" onclick="table.toggle('#how-to-play');table.toggle('#bgWhite');setTimeout(()=>{menu.changeGameMenu(1)},300);"></div>
+		</div>
+	</div>
+
+	<!-- <div id="startButton" onclick="table.tilesUpdate()">Start</div> -->
+
+	<script type="text/javascript" src="./scripts.js"></script>
+</body>
+</html>
